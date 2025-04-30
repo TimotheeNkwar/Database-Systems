@@ -9,14 +9,14 @@
 ### Why Use SQLite3 for the Dental Clinic Database?
         SQLite3 is ideal for the dental clinic’s 3NF-normalized database due to:
 
-      **Simplicity:** Serverless, single-file database with minimal setup, perfect for small clinics.
+      Simplicity:Serverless, single-file database with minimal setup, perfect for small clinics.
 
-      **Efficiency:** Handles moderate data (e.g., Patient , Appointment ) and supports foreign keys for relationships (e.g., DentistID in Appointment ).
+      Efficiency:Handles moderate data (e.g., Patient , Appointment ) and supports foreign keys for relationships (e.g., DentistID in Appointment ).
 
-      **Reliability:** ACID-compliant, ensuring data integrity for critical records like Payment or Prescription .
+      Reliability: ACID-compliant, ensuring data integrity for critical records like Payment or Prescription .
 
-      **Cost-Effective:** Free and low-resource, reducing costs for hardware and licensing.
+      Cost-Effective: Free and low-resource, reducing costs for hardware and licensing.
 
-      **Portability:** Cross-platform, embedded, and easy to back up or transfer.
+      Portability: Cross-platform, embedded, and easy to back up or transfer.
 
-      **Scalability:** Suitable for small to medium workloads, with the 3NF design optimizing performance.
+      Scalability: Suitable for small to medium workloads, with the 3NF design optimizing performance.
