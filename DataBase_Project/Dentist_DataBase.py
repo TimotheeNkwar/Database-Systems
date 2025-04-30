@@ -86,7 +86,7 @@ try:
         FOREIGN KEY (PatientID) REFERENCES Patient(PatientID)
     );
     """)
-                                        ###5. Data Manipulation Language (DML)
+                        ##5. Data Manipulation Language (DML)
     # Helper functions for random data generation
     def random_date(start_year, end_year):
         start_date = datetime(start_year, 1, 1)
