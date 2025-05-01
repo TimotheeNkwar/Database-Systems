@@ -11,6 +11,6 @@ This project includes data modeling, table design, and SQL queries to handle rea
 - **Dentists & Staff**: Store dentist profiles, specializations, and schedules.
 - **Treatments & Procedures**: Log procedures performed, duration, and costs.
 
-> 🔧 Tools used: Sqlite3 SQL, ERD tools (e.g., Dbeaver Data manager)
+> 🔧 Tools used: Sqlite3, SQL, ERD tools (e.g., Dbeaver Data manager)
 
 
