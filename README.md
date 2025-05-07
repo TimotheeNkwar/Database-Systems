@@ -26,7 +26,7 @@ This project contains the design and implementation of a relational database sys
 
 ## 🔗 Link
 
-👉 [View the full project on GitHub](https://github.com/your_username/your_repository)
+👉 [View the full project on GitHub](https://github.com/TimotheeNkwar/Database-Systems/blob/main/DataBase_Project/Dentist_Clinic_DB_Project.ipynb)
 
 ---
 
