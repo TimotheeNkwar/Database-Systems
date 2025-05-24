@@ -63,7 +63,7 @@ This demo showcases how to integrate **SQLite3** with **Pandas** for initial dat
 
 This demo is useful for data professionals looking to bridge lightweight SQL databases with scalable Python analytics.
 
-## Benchmark Pandas vs Dask
+## 3 Benchmark Pandas vs Dask
 
 This script compares the performance of simple operations (like summing a column)  
 between two popular Python data processing libraries:
