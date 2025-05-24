@@ -62,3 +62,31 @@ This demo showcases how to integrate **SQLite3** with **Pandas** for initial dat
 ---
 
 This demo is useful for data professionals looking to bridge lightweight SQL databases with scalable Python analytics.
+
+## Benchmark Pandas vs Dask
+
+This script compares the performance of simple operations (like summing a column)  
+between two popular Python data processing libraries:
+
+- **Pandas**: in-memory processing, ideal for small to medium datasets  
+- **Dask**: parallel and lazy execution, suitable for larger datasets
+
+The goal is to demonstrate execution time differences using `%timeit` in Python,  
+highlighting the strengths and limitations of each library depending on data size.
+
+---
+
+## Contents
+
+- Creating a sample DataFrame  
+- Summing a column using Pandas and Dask  
+- Measuring execution time with `%timeit`  
+- Instructions for installing dependencies and running the benchmark
+
+---
+
+## Usage
+
+```bash
+pip install pandas dask matplotlib
+jupyter notebook  # or python benchmark_pandas_dask.ipynb
