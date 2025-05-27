@@ -22,11 +22,7 @@ This project contains the design and implementation of a relational database sys
 
 - Identify top-performing dentists
 - Track popular medicines
-- Analyze payment trends
-
-## 🔗 Link
-
-👉 [View the full project on GitHub](https://github.com/TimotheeNkwar/Database-Systems/blob/main/DataBase_Project/Dentist_Clinic_DB_Project.ipynb)
+- Analyze payment trend
 
 ---
 
