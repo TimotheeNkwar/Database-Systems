@@ -119,6 +119,7 @@ try:
 
     # Insert 50 Staff (30 Dentists, 10 Nurses, 10 Employees)
     staff_data = []
+    dentist_staff_ids = []
     for i in range(50):
         role = 'Dentist' if i < 30 else 'Nurse' if i < 40 else 'Employee'
         staff_data.append((
@@ -129,13 +130,16 @@ try:
             f"{first_names[i % len(first_names)]}.{last_names[i % len(last_names)]}@clinic.com".lower(),
             random_date(2015, 2024)
         ))
+        if role == 'Dentist':
+            dentist_staff_ids.append(i + 1)  # StaffID is AUTOINCREMENT, so 1-based
+
     cursor.executemany("""
     INSERT INTO Staff (FirstName, LastName, Role, Phone, Email, HireDate)
     VALUES (?, ?, ?, ?, ?, ?)
     """, staff_data)
-    
-    # Insert 30 Dentists (only for staff who are dentists, StaffID 1–30)
-    dentist_data = [(i + 1, random.choice(specialties)) for i in range(30)]
+
+    # Insert 30 Dentists (StaffID 1–30, all with role 'Dentist')
+    dentist_data = [(staff_id, random.choice(specialties)) for staff_id in dentist_staff_ids]
     cursor.executemany("""
     INSERT INTO Dentist (DentistID, Specialty)
     VALUES (?, ?)
@@ -158,12 +162,18 @@ try:
     VALUES (?, ?, ?, ?, ?, ?, ?)
     """, patient_data)
 
-    # Insert 50 Appointments (DentistID limited to 1–30 to match Dentist table)
+    # Get all PatientIDs and DentistIDs for realistic foreign key assignment
+    cursor.execute("SELECT PatientID FROM Patient")
+    patient_ids = [row[0] for row in cursor.fetchall()]
+    cursor.execute("SELECT DentistID FROM Dentist")
+    dentist_ids = [row[0] for row in cursor.fetchall()]
+
+    # Insert 50 Appointments (linking real PatientIDs and DentistIDs)
     appointment_data = []
     for i in range(50):
         appointment_data.append((
-            random.randint(1, 50),  # PatientID
-            random.randint(1, 30),  # DentistID (only valid DentistIDs)
+            random.choice(patient_ids),
+            random.choice(dentist_ids),
             random_date(2024, 2025),
             random_time(),
             random.choice(statuses)
@@ -173,11 +183,18 @@ try:
     VALUES (?, ?, ?, ?, ?)
     """, appointment_data)
 
-    # Insert 50 Treatments> Treatments
+    # Get all AppointmentIDs for Treatments
+    cursor.execute("SELECT AppointmentID, PatientID FROM Appointment")
+    appointment_rows = cursor.fetchall()
+    appointment_ids = [row[0] for row in appointment_rows]
+    appointment_patient_map = {row[0]: row[1] for row in appointment_rows}
+
+    # Insert 50 Treatments (each linked to a real Appointment)
     treatment_data = []
     for i in range(50):
+        appointment_id = appointment_ids[i % len(appointment_ids)]
         treatment_data.append((
-            i + 1,  # AppointmentID
+            appointment_id,
             random.choice(treatment_types),
             random.choice(treatment_descs),
             round(random.uniform(100.00, 1000.00), 2)
@@ -186,6 +203,12 @@ try:
     INSERT INTO Treatment (AppointmentID, TreatmentType, Description, Cost)
     VALUES (?, ?, ?, ?)
     """, treatment_data)
+
+    # Get all TreatmentIDs for Prescriptions and Payments
+    cursor.execute("SELECT TreatmentID, AppointmentID FROM Treatment")
+    treatment_rows = cursor.fetchall()
+    treatment_ids = [row[0] for row in treatment_rows]
+    treatment_appointment_map = {row[0]: row[1] for row in treatment_rows}
 
     # Insert 50 Medicines
     medicine_data = []
@@ -200,12 +223,16 @@ try:
     VALUES (?, ?, ?)
     """, medicine_data)
 
-    # Insert 50 Prescriptions
+    # Get all MedicineIDs for Prescriptions
+    cursor.execute("SELECT MedicineID FROM Medicine")
+    medicine_ids = [row[0] for row in cursor.fetchall()]
+
+    # Insert 50 Prescriptions (linking real TreatmentIDs and MedicineIDs)
     prescription_data = []
     for i in range(50):
         prescription_data.append((
-            random.randint(1, 50),  # TreatmentID
-            random.randint(1, 50),  # MedicineID
+            random.choice(treatment_ids),
+            random.choice(medicine_ids),
             f"{random.randint(100, 500)}mg {random.choice(['once', 'twice', 'thrice'])} daily",
             f"{random.randint(3, 14)} days"
         ))
@@ -216,15 +243,12 @@ try:
 
     # Insert 50 Payments (PatientID matches Appointment's PatientID for Treatment)
     payment_data = []
-    for i in range(50):
-        # Get the PatientID associated with the Appointment for this Treatment
-        cursor.execute("""
-        SELECT PatientID FROM Appointment WHERE AppointmentID = ?
-        """, (i + 1,))
-        patient_id = cursor.fetchone()[0]
+    for treatment_id in treatment_ids:
+        appointment_id = treatment_appointment_map[treatment_id]
+        patient_id = appointment_patient_map[appointment_id]
         payment_data.append((
-            i + 1,  # TreatmentID
-            patient_id,  # PatientID (consistent with Appointment)
+            treatment_id,
+            patient_id,
             round(random.uniform(100.00, 1000.00), 2),
             random_date(2024, 2025)
         ))
